@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "SchoolLib/mysql-connector-j-9.6.0.jar"
+    ],
+    "java.debug.settings.vmArgs": "-cp .:/Users/abhaypatel/java_practice/SchoolLib/mysql-connector-j-9.6.0.jar"
+}
