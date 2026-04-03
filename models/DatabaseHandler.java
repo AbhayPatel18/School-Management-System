@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class DatabaseHandler {
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/school_db";
     private static final String USER = "root";
-    private static final String PASSWORD = "Your_Password_here";
+    private static final String PASSWORD = "1234";
 
     /*
      * public static Connection connect() {
@@ -39,7 +39,7 @@ public class DatabaseHandler {
 
         String teacherSql = "CREATE TABLE IF NOT EXISTS teachers (" +
                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                "name VARCHAR(100) NOT NULL, " +
+                "name VARCHAR(100) NOT NULL, "+
                 "city VARCHAR(50), " +
                 "subject VARCHAR(50), " +
                 "salary DOUBLE)";
@@ -217,6 +217,32 @@ public class DatabaseHandler {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    // --- UPDATE STUDENT ---
+    public static void updateStudent(int rollno, String newName, String newCity, double newMarks) {
+        String sqlQuery = "UPDATE students SET name = ?, city = ?, marks = ? WHERE rollno = ?";
+
+        try (Connection con = connect();
+             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+
+            pstmt.setString(1, newName);
+            pstmt.setString(2, newCity);
+            pstmt.setDouble(3, newMarks);
+            pstmt.setInt(4, rollno); // Targets the specific student
+
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("\nSuccess: Student (Roll No: " + rollno + ") updated successfully!");
+            } else {
+                System.out.println("\nError: Student with Roll No " + rollno + " not found!");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Something went wrong while updating student: " + e);
         }
     }
 }
