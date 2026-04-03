@@ -103,6 +103,7 @@ public class DatabaseHandler {
     }
 
     // details of all students
+    // details of all students
     public static void getAllStudents() {
         String sqlQuery = "SELECT * FROM students";
 
@@ -110,23 +111,21 @@ public class DatabaseHandler {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(sqlQuery)) {
 
-            System.out.println(
-                    "----------------------------------------Student Details----------------------------------------");
-            System.out.printf("%-4s | %-20s | %-15s | %-7s | %n",
-                    "ROLL NO", "NAME", "CITY", "MARKS");
+            System.out.println("----------------------------------------------------------------------");
+            System.out.printf("%-7s | %-20s | %-15s | %-7s | %n", "ROLL NO", "NAME", "CITY", "MARKS");
+            System.out.println("----------------------------------------------------------------------");
 
             // retrieving data from tables
-
             while (rs.next()) {
                 int r = rs.getInt("rollno");
                 String n = rs.getString("name");
                 String c = rs.getString("city");
                 Double m = rs.getDouble("marks");
 
-                System.out.printf("%-4s | %-20s | %-15s | %-7.2s | %n", r, n, c, m);
-
+                // %-7d for int, %-7.1f for 1-decimal double
+                System.out.printf("%-7d | %-20s | %-15s | %-7.1f | %n", r, n, c, m);
             }
-            System.out.println("-----------------------------------------------------");
+            System.out.println("----------------------------------------------------------------------");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -134,6 +133,7 @@ public class DatabaseHandler {
     }
 
     // details of All teachers
+   // details of All teachers
     public static void getAllTeachers() {
         String sqlQuery = "SELECT * FROM teachers";
 
@@ -141,24 +141,22 @@ public class DatabaseHandler {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(sqlQuery)) {
 
-            System.out.println(
-                    "----------------------------------------Teacher Details----------------------------------------");
-            System.out.printf("%-4s | %-20s | %-15s | %-7s | %-20s | %n",
-                    "ID", "NAME", "CITY", "SALARY", "SUBJECT");
+            System.out.println("------------------------------------------------------------------------------------------");
+            System.out.printf("%-5s | %-20s | %-15s | %-10s | %-20s | %n", "ID", "NAME", "CITY", "SALARY", "SUBJECT");
+            System.out.println("------------------------------------------------------------------------------------------");
 
             // retrieving data from tables
-
             while (rs.next()) {
-                int ID = rs.getInt("id");
+                int id = rs.getInt("id");
                 String n = rs.getString("name");
                 String c = rs.getString("city");
                 Double sal = rs.getDouble("salary");
                 String sub = rs.getString("subject");
 
-                System.out.printf("%-4s | %-20s | %-15s | %-7.2s | %-20s | %n", ID, n, c, sal, sub);
-
+                // %-5d for int, %-10.2f for 2-decimal double
+                System.out.printf("%-5d | %-20s | %-15s | %-10.2f | %-20s | %n", id, n, c, sal, sub);
             }
-            System.out.println("-----------------------------------------------------");
+            System.out.println("------------------------------------------------------------------------------------------");
 
         } catch (SQLException e) {
             e.printStackTrace();
