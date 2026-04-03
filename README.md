@@ -38,6 +38,6 @@ The system relies on a MySQL database with the following core structure:
 ## 🗺️ Roadmap
 - [x] Establish secure JDBC MySQL connection
 - [x] Complete Create, Read, Delete (CRD) operations
-- [ ] Implement Update (U) operation for full CRUD
+- [x] Implement Update (U) operation for full CRUD
 - [ ] Integrate Custom Exception Handling for invalid data entry
 - [ ] Migrate from Console Application to Graphical User Interface (GUI) using Java Swing
