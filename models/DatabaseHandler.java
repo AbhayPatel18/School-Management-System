@@ -243,4 +243,25 @@ public class DatabaseHandler {
             System.out.println("Something went wrong while updating student: " + e);
         }
     }
+    // --- GET TOTAL STUDENT COUNT (Analytics) ---
+    public static void getTotalStudentsCount() {
+        // Using an Aggregate Function to count rows directly in SQL
+        String sqlQuery = "SELECT COUNT(*) AS total FROM students";
+
+        try (Connection con = connect();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sqlQuery)) {
+
+            // rs.next() moves to the first (and only) row containing our answer
+            if (rs.next()) {
+                int count = rs.getInt("total"); // Grabbing the alias we created
+                System.out.println("\n==================================");
+                System.out.println(" Total Students in Database: " + count);
+                System.out.println("==================================");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

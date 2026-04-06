@@ -22,7 +22,8 @@ public class SchoolApp {
          System.out.println("5. Search Student (using Roll no.)");
          System.out.println("6. Delete Student (using Roll no.)");
          System.out.println("7. Update Student (using Roll no.)");
-         System.out.println("8. Exit");
+         System.out.println("8. Show total Student Count");
+         System.out.println("9. Exit");
          System.out.print("Enter your choice: ");
 
          int choice = sc.nextInt();
@@ -75,23 +76,27 @@ public class SchoolApp {
                roll = sc.nextInt();
                DatabaseHandler.deleteStudent(roll);
                break;
-            case 7:System.out.print("Enter Roll no. of student to update: ");
+            case 7:
+               System.out.print("Enter Roll no. of student to update: ");
                int updateRoll = sc.nextInt();
                sc.nextLine(); // Clear scanner buffer
-               
+
                System.out.print("Enter New Name: ");
                String newName = sc.nextLine();
-               
+
                System.out.print("Enter New City: ");
                String newCity = sc.nextLine();
-               
+
                System.out.print("Enter New Marks: ");
                double newMarks = sc.nextDouble();
                sc.nextLine(); // Clear scanner buffer
-               
+
                DatabaseHandler.updateStudent(updateRoll, newName, newCity, newMarks);
                break;
             case 8:
+               DatabaseHandler.getTotalStudentsCount();
+               break;
+            case 9:
                System.out.println("Thanks for using this program , Exiting the program .... ");
                isRunning = false;
                break;
