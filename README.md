@@ -1,43 +1,36 @@
-# 🏫 School Management System
+# School Management System
 
-A core Java console application demonstrating complete CRUD operations using **JDBC** and **MySQL**. 
+A robust, console-based CRUD application developed in Java, utilizing JDBC for seamless MySQL database integration. This system is designed to manage student and teacher records efficiently with automated analytics and data sorting.
 
-This project was built from scratch to transition from basic in-memory data structures to a robust, persistent database architecture.
+## Features
+* **Complete CRUD Operations:** Create, Read, Update, and Delete records for both students and teachers.
+* **Automated Analytics:** Utilizes SQL aggregate functions to generate real-time database statistics (e.g., total registered students).
+* **Smart Sorting:** Automatically sorts queried data (e.g., retrieving students ordered by highest marks descending).
+* **Data Persistence:** Fully integrated with a local MySQL database ensuring data integrity and session persistence.
 
-## 🚀 Features
-- **Create:** Add new students and teachers to the database.
-- **Read:** View all records in a formatted table or search for specific students by their unique Roll No.
-- **Delete:** Safely remove records with built-in validation checks to prevent crashes.
-- *Update: (Coming Soon!)*
+## Technologies Used
+* **Language:** Java (JDK 11 or higher recommended)
+* **Database:** MySQL Server
+* **API:** Java Database Connectivity (JDBC)
+* **IDE/Environment:** Visual Studio Code / Terminal
 
-## 🛠️ Tech Stack
-- **Language:** Java
-- **Database:** MySQL
-- **API:** JDBC (Java Database Connectivity)
-- **Concepts Applied:** Object-Oriented Programming, `try-with-resources`, SQL `PreparedStatement` logic.
+## Setup and Installation
 
-## 🗄️ Database Schema
-The system relies on a MySQL database with the following core structure:
+### 1. Database Configuration
+Before running the application, you must configure your local MySQL server.
+1. Open MySQL Workbench or your preferred SQL terminal.
+2. Create a new database named `school_db`.
+3. Open `models/DatabaseHandler.java` and update the database credentials to match your local environment:
+   - `URL`
+   - `USER`
+   - `PASSWORD`
 
-**Table: `students`**
-| Column | Type | Description |
-| :--- | :--- | :--- |
-| `roll_no` | INT (Primary Key) | Auto-incremented unique ID |
-| `name` | VARCHAR(50) | Student's full name |
-| `city` | VARCHAR(50) | Student's city of residence |
-| `marks` | DOUBLE | Academic score |
+*(Note: The application includes an `initializeDb()` method that will automatically generate the required `students` and `teachers` tables upon first execution.)*
 
-*(Note: The `teachers` table follows a similar structure tracking salary and subject).*
+### 2. Execution via Shell Script (Recommended)
+Configuring the Java classpath for JDBC drivers manually in VS Code can be error-prone. To streamline execution, a shell script (`run.sh`) is included in the root directory. This script handles compilation and executes the program with the correct classpath arguments automatically.
 
-## 💻 How to Run (Locally)
-1. Clone this repository to your local machine.
-2. Ensure you have MySQL running and the `mysql-connector-j` jar file included in your classpath.
-3. Update the `DatabaseHandler.java` file with your local MySQL credentials (username/password).
-4. Run the `run.sh` script or compile and execute `SchoolApp.java` from your terminal.
-
-## 🗺️ Roadmap
-- [x] Establish secure JDBC MySQL connection
-- [x] Complete Create, Read, Delete (CRD) operations
-- [x] Implement Update (U) operation for full CRUD
-- [ ] Integrate Custom Exception Handling for invalid data entry
-- [ ] Migrate from Console Application to Graphical User Interface (GUI) using Java Swing
+**For Mac/Linux users:**
+Open your terminal, navigate to the project root, and execute:
+```bash
+./run.sh

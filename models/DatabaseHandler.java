@@ -39,7 +39,7 @@ public class DatabaseHandler {
 
         String teacherSql = "CREATE TABLE IF NOT EXISTS teachers (" +
                 "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                "name VARCHAR(100) NOT NULL, "+
+                "name VARCHAR(100) NOT NULL, " +
                 "city VARCHAR(50), " +
                 "subject VARCHAR(50), " +
                 "salary DOUBLE)";
@@ -105,8 +105,7 @@ public class DatabaseHandler {
     // details of all students
     // details of all students
     public static void getAllStudents() {
-        String sqlQuery = "SELECT * FROM students";
-
+        String sqlQuery = "SELECT * FROM students ORDER BY marks DESC";
         try (Connection con = connect();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(sqlQuery)) {
@@ -133,7 +132,7 @@ public class DatabaseHandler {
     }
 
     // details of All teachers
-   // details of All teachers
+    // details of All teachers
     public static void getAllTeachers() {
         String sqlQuery = "SELECT * FROM teachers";
 
@@ -141,9 +140,11 @@ public class DatabaseHandler {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(sqlQuery)) {
 
-            System.out.println("------------------------------------------------------------------------------------------");
+            System.out.println(
+                    "------------------------------------------------------------------------------------------");
             System.out.printf("%-5s | %-20s | %-15s | %-10s | %-20s | %n", "ID", "NAME", "CITY", "SALARY", "SUBJECT");
-            System.out.println("------------------------------------------------------------------------------------------");
+            System.out.println(
+                    "------------------------------------------------------------------------------------------");
 
             // retrieving data from tables
             while (rs.next()) {
@@ -156,7 +157,8 @@ public class DatabaseHandler {
                 // %-5d for int, %-10.2f for 2-decimal double
                 System.out.printf("%-5d | %-20s | %-15s | %-10.2f | %-20s | %n", id, n, c, sal, sub);
             }
-            System.out.println("------------------------------------------------------------------------------------------");
+            System.out.println(
+                    "------------------------------------------------------------------------------------------");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -194,16 +196,16 @@ public class DatabaseHandler {
 
     }
 
-    //deleting students using rollno
+    // deleting students using rollno
     // --- DELETE STUDENT BY ID ---
     public static void deleteStudent(int rollNo) {
         String sql = "DELETE FROM students WHERE rollno = ?";
 
         try (Connection con = connect();
-             PreparedStatement pstmt = con.prepareStatement(sql)) {
-            
+                PreparedStatement pstmt = con.prepareStatement(sql)) {
+
             pstmt.setInt(1, rollNo);
-            
+
             // executeUpdate returns the number of rows affected
             int rowsAffected = pstmt.executeUpdate();
 
@@ -217,12 +219,13 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
+
     // --- UPDATE STUDENT ---
     public static void updateStudent(int rollno, String newName, String newCity, double newMarks) {
         String sqlQuery = "UPDATE students SET name = ?, city = ?, marks = ? WHERE rollno = ?";
 
         try (Connection con = connect();
-             PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+                PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
 
             pstmt.setString(1, newName);
             pstmt.setString(2, newCity);
@@ -243,14 +246,15 @@ public class DatabaseHandler {
             System.out.println("Something went wrong while updating student: " + e);
         }
     }
+
     // --- GET TOTAL STUDENT COUNT (Analytics) ---
     public static void getTotalStudentsCount() {
         // Using an Aggregate Function to count rows directly in SQL
         String sqlQuery = "SELECT COUNT(*) AS total FROM students";
 
         try (Connection con = connect();
-             Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(sqlQuery)) {
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(sqlQuery)) {
 
             // rs.next() moves to the first (and only) row containing our answer
             if (rs.next()) {
