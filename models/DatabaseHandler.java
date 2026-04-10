@@ -268,4 +268,37 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
+
+    // -- Search Student By Name
+    public static void searchStudentByName(String searchKeyword) {
+
+        String sql = "Select * FROM Students Where name LIKE ?";
+
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, "%" + searchKeyword + "%");
+
+            ResultSet rs = pstmt.executeQuery();
+
+            System.out.println("----------------------------------------------------------------------");
+            System.out.printf("%-7s | %-20s | %-15s | %-7s | %n", "ROLL NO", "NAME", "CITY", "MARKS");
+            System.out.println("----------------------------------------------------------------------");
+
+            // retrieving data from tables
+            while (rs.next()) {
+                int r = rs.getInt("rollno");
+                String n = rs.getString("name");
+                String c = rs.getString("city");
+                Double m = rs.getDouble("marks");
+
+                // %-7d for int, %-7.1f for 1-decimal double
+                System.out.printf("%-7d | %-20s | %-15s | %-7.1f | %n", r, n, c, m);
+            }
+            System.out.println("----------------------------------------------------------------------");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

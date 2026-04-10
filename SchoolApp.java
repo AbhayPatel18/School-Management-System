@@ -20,10 +20,11 @@ public class SchoolApp {
          System.out.println("3. Show All Students");
          System.out.println("4. Show All Teachers");
          System.out.println("5. Search Student (using Roll no.)");
-         System.out.println("6. Delete Student (using Roll no.)");
-         System.out.println("7. Update Student (using Roll no.)");
-         System.out.println("8. Show total Student Count");
-         System.out.println("9. Exit");
+         System.out.println("6. Search Student (using name)");
+         System.out.println("7. Delete Student (using Roll no.)");
+         System.out.println("8. Update Student (using Roll no.)");
+         System.out.println("9. Show total Student Count");
+         System.out.println("10.Exit");
          System.out.print("Enter your choice: ");
 
          int choice = sc.nextInt();
@@ -70,13 +71,18 @@ public class SchoolApp {
 
                DatabaseHandler.getStudentByRollno(roll);
                break;
-
             case 6:
+               System.out.print("Enter name or partial name to search:- ");
+               String searchKeyword = sc.nextLine();
+               DatabaseHandler.searchStudentByName(searchKeyword);
+               break;
+
+            case 7:
                System.out.print("Enter Roll no. :- ");
                roll = sc.nextInt();
                DatabaseHandler.deleteStudent(roll);
                break;
-            case 7:
+            case 8:
                System.out.print("Enter Roll no. of student to update: ");
                int updateRoll = sc.nextInt();
                sc.nextLine(); // Clear scanner buffer
@@ -93,10 +99,10 @@ public class SchoolApp {
 
                DatabaseHandler.updateStudent(updateRoll, newName, newCity, newMarks);
                break;
-            case 8:
+            case 9:
                DatabaseHandler.getTotalStudentsCount();
                break;
-            case 9:
+            case 10:
                System.out.println("Thanks for using this program , Exiting the program .... ");
                isRunning = false;
                break;
