@@ -24,7 +24,8 @@ public class SchoolApp {
          System.out.println("7. Delete Student (using Roll no.)");
          System.out.println("8. Update Student (using Roll no.)");
          System.out.println("9. Show total Student Count");
-         System.out.println("10.Exit");
+         System.out.println("10.Show Topper List");
+         System.out.println("11.Exit");
          System.out.print("Enter your choice: ");
 
          int choice = sc.nextInt();
@@ -103,6 +104,9 @@ public class SchoolApp {
                DatabaseHandler.getTotalStudentsCount();
                break;
             case 10:
+               DatabaseHandler.showTopStudents();
+               break;
+            case 11:
                System.out.println("Thanks for using this program , Exiting the program .... ");
                isRunning = false;
                break;
