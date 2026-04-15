@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import models.DatabaseHandler;
 
@@ -26,95 +29,136 @@ public class SchoolApp {
          System.out.println("9. Show total Student Count");
          System.out.println("10.Show Topper List");
          System.out.println("11.Exit");
-         System.out.print("Enter your choice: ");
 
-         int choice = sc.nextInt();
-         sc.nextLine();
+         try {
+            System.out.print("Enter your choice: ");
+            int choice = sc.nextInt();
+            sc.nextLine();
 
-         switch (choice) {
-            case 1:
-               System.out.print("Enter Name:- ");
-               String stdName = sc.nextLine();
-               System.out.print("Enter City:- ");
-               String stdCity = sc.nextLine();
-               System.out.print("Enter Marks:- ");
-               double marks = sc.nextDouble();
-               sc.nextLine();
-               DatabaseHandler.insertStudent(stdName, stdCity, marks);
-               System.out.println("Student Added!");
+            switch (choice) {
+               case 1:
+                  System.out.print("Enter Name:- ");
+                  String stdName = sc.nextLine();
+                  System.out.print("Enter City:- ");
+                  String stdCity = sc.nextLine();
+                  System.out.print("Enter Marks:- ");
+                  double marks = sc.nextDouble();
+                  sc.nextLine();
 
-               break;
-            case 2:
-               System.out.print("Enter Name:- ");
-               String trName = sc.nextLine();
-               System.out.print("Enter City:- ");
-               String trCity = sc.nextLine();
-               System.out.print("Enter Salary:- ");
-               double salary = sc.nextDouble();
-               sc.nextLine();
-               System.out.print("Enter Subject:- ");
-               String trSubject = sc.nextLine();
+                  while(marks<0 || marks>100){
+                     System.out.println("Invalid marks ! , Marks must be between 0 & 100.");
+                     System.out.println("Please Enter Marks again :- ");
+                     marks = sc.nextDouble();
+                     sc.nextLine();
+                  }
+                  
 
-               DatabaseHandler.insertTeacher(trName, trCity, salary, trSubject);
-               System.out.println("Teacher Added!");
+                  DatabaseHandler.insertStudent(stdName, stdCity, marks);
+                  System.out.println("Student Added!");
 
-               break;
+                  try {FileWriter pen = new FileWriter("AuditLog.txt",true);
+                  pen.write("New Student Added:- "+ stdName +" with Marks:- "+ marks+"\n");
 
-            case 3:
-               DatabaseHandler.getAllStudents();
-               break;
-            case 4:
-               DatabaseHandler.getAllTeachers();
-               break;
-            case 5:
-               System.out.print("Enter Roll no. :- ");
-               int roll = sc.nextInt();
+                  pen.close();
+                      
+                  } catch (IOException e) {
+                     System.out.println("Could NOT write into the Log File.");
+                  }
 
-               DatabaseHandler.getStudentByRollno(roll);
-               break;
-            case 6:
-               System.out.print("Enter name or partial name to search:- ");
-               String searchKeyword = sc.nextLine();
-               DatabaseHandler.searchStudentByName(searchKeyword);
-               break;
+                  break;
+               case 2:
+                  System.out.print("Enter Name:- ");
+                  String trName = sc.nextLine();
+                  System.out.print("Enter City:- ");
+                  String trCity = sc.nextLine();
+                  System.out.print("Enter Salary:- ");
+                  double salary = sc.nextDouble();
+                  sc.nextLine();
+                  System.out.print("Enter Subject:- ");
+                  String trSubject = sc.nextLine();
 
-            case 7:
-               System.out.print("Enter Roll no. :- ");
-               roll = sc.nextInt();
-               DatabaseHandler.deleteStudent(roll);
-               break;
-            case 8:
-               System.out.print("Enter Roll no. of student to update: ");
-               int updateRoll = sc.nextInt();
-               sc.nextLine(); // Clear scanner buffer
+                  DatabaseHandler.insertTeacher(trName, trCity, salary, trSubject);
+                  System.out.println("Teacher Added!");
 
-               System.out.print("Enter New Name: ");
-               String newName = sc.nextLine();
+                  break;
 
-               System.out.print("Enter New City: ");
-               String newCity = sc.nextLine();
+               case 3:
+                  DatabaseHandler.getAllStudents();
+                  break;
+               case 4:
+                  DatabaseHandler.getAllTeachers();
+                  break;
+               case 5:
+                  System.out.print("Enter Roll no. :- ");
+                  int roll = sc.nextInt();
 
-               System.out.print("Enter New Marks: ");
-               double newMarks = sc.nextDouble();
-               sc.nextLine(); // Clear scanner buffer
+                  DatabaseHandler.getStudentByRollno(roll);
+                  break;
+               case 6:
+                  System.out.print("Enter name or partial name to search:- ");
+                  String searchKeyword = sc.nextLine();
+                  DatabaseHandler.searchStudentByName(searchKeyword);
+                  break;
 
-               DatabaseHandler.updateStudent(updateRoll, newName, newCity, newMarks);
-               break;
-            case 9:
-               DatabaseHandler.getTotalStudentsCount();
-               break;
-            case 10:
-               DatabaseHandler.showTopStudents();
-               break;
-            case 11:
-               System.out.println("Thanks for using this program , Exiting the program .... ");
-               isRunning = false;
-               break;
+               case 7:
+                  System.out.print("Enter Roll no. :- ");
+                  roll = sc.nextInt();
+                  DatabaseHandler.deleteStudent(roll);
 
-            default:
-               System.out.println("Invalid Choice, Please try again :(");
-               break;
+                  try {FileWriter pen = new FileWriter("AuditLog.txt",true);
+                  pen.write("Existing Student Deleted , of Rollno:- "+ roll+"\n");
 
+                  pen.close();
+                      
+                  } catch (IOException e) {
+                     System.out.println("Could NOT write into the Log File.");
+                  }
+                  break;
+               case 8:
+                  System.out.print("Enter Roll no. of student to update: ");
+                  int updateRoll = sc.nextInt();
+                  sc.nextLine(); // Clear scanner buffer
+
+                  System.out.print("Enter New Name: ");
+                  String newName = sc.nextLine();
+
+                  System.out.print("Enter New City: ");
+                  String newCity = sc.nextLine();
+
+                  System.out.print("Enter New Marks: ");
+                  double newMarks = sc.nextDouble();
+                  sc.nextLine(); // Clear scanner buffer
+
+                  try {FileWriter pen = new FileWriter("AuditLog.txt",true);
+                  pen.write("Existing Student Updated :- "+ newName +" with Marks:- "+ newMarks+"\n");
+
+                  pen.close();
+                      
+                  } catch (IOException e) {
+                     System.out.println("Could NOT write into the Log File.");
+                  }
+
+                  DatabaseHandler.updateStudent(updateRoll, newName, newCity, newMarks);
+                  break;
+               case 9:
+                  DatabaseHandler.getTotalStudentsCount();
+                  break;
+               case 10:
+                  DatabaseHandler.showTopStudents();
+                  break;
+               case 11:
+                  System.out.println("Thanks for using this program , Exiting the program .... ");
+                  isRunning = false;
+                  break;
+
+               default:
+                  System.out.println("Invalid Choice, Please try again :(");
+                  break;
+
+            }
+         } catch (InputMismatchException e) {
+            System.out.println("Please Enter Number Only !!");
+            sc.nextLine();
          }
 
       }
