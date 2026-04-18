@@ -1,16 +1,39 @@
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import models.DatabaseHandler;
 
 public class SchoolApp {
+   public static boolean authenticateAdmin(Scanner sc) {
+      String correctUser = "admin";
+      String correctPass = "java123";
+      int attempts = 3;
 
-   public static void main(String[] args) {
-      Scanner sc = new Scanner(System.in);
+      System.out.println("\n======= ADMIN PORTAL =======");
 
-      System.out.println("Connecting to Database ....");
-      DatabaseHandler.initializeDb();
+      while (attempts > 0) {
+         System.out.print("Username: ");
+         String user = sc.nextLine();
+
+         System.out.print("Password: ");
+         String pass = sc.nextLine();
+
+         if (user.equals(correctUser) && pass.equals(correctPass)) {
+            System.out.println("Login Successful! Welcome, Admin.");
+            return true;
+         } else {
+            attempts--;
+            System.out.println("Access Denied! Incorrect username or password.");
+            System.out.println("Attempts remaining: " + attempts + "\n");
+         }
+      }
+
+      return false;
+   }
+
+   public static void adminDashboard(Scanner sc) {
       System.out.println("------------------------------------------------");
 
       boolean isRunning = true;
@@ -45,22 +68,22 @@ public class SchoolApp {
                   double marks = sc.nextDouble();
                   sc.nextLine();
 
-                  while(marks<0 || marks>100){
+                  while (marks < 0 || marks > 100) {
                      System.out.println("Invalid marks ! , Marks must be between 0 & 100.");
                      System.out.println("Please Enter Marks again :- ");
                      marks = sc.nextDouble();
                      sc.nextLine();
                   }
-                  
 
                   DatabaseHandler.insertStudent(stdName, stdCity, marks);
                   System.out.println("Student Added!");
 
-                  try {FileWriter pen = new FileWriter("AuditLog.txt",true);
-                  pen.write("New Student Added:- "+ stdName +" with Marks:- "+ marks+"\n");
+                  try {
+                     FileWriter pen = new FileWriter("AuditLog.txt", true);
+                     pen.write("New Student Added:- " + stdName + " with Marks:- " + marks + "\n");
 
-                  pen.close();
-                      
+                     pen.close();
+
                   } catch (IOException e) {
                      System.out.println("Could NOT write into the Log File.");
                   }
@@ -105,11 +128,12 @@ public class SchoolApp {
                   roll = sc.nextInt();
                   DatabaseHandler.deleteStudent(roll);
 
-                  try {FileWriter pen = new FileWriter("AuditLog.txt",true);
-                  pen.write("Existing Student Deleted , of Rollno:- "+ roll+"\n");
+                  try {
+                     FileWriter pen = new FileWriter("AuditLog.txt", true);
+                     pen.write("Existing Student Deleted , of Rollno:- " + roll + "\n");
 
-                  pen.close();
-                      
+                     pen.close();
+
                   } catch (IOException e) {
                      System.out.println("Could NOT write into the Log File.");
                   }
@@ -129,11 +153,12 @@ public class SchoolApp {
                   double newMarks = sc.nextDouble();
                   sc.nextLine(); // Clear scanner buffer
 
-                  try {FileWriter pen = new FileWriter("AuditLog.txt",true);
-                  pen.write("Existing Student Updated :- "+ newName +" with Marks:- "+ newMarks+"\n");
+                  try {
+                     FileWriter pen = new FileWriter("AuditLog.txt", true);
+                     pen.write("Existing Student Updated :- " + newName + " with Marks:- " + newMarks + "\n");
 
-                  pen.close();
-                      
+                     pen.close();
+
                   } catch (IOException e) {
                      System.out.println("Could NOT write into the Log File.");
                   }
@@ -162,6 +187,89 @@ public class SchoolApp {
          }
 
       }
-      sc.close();
+
+   }
+
+   public static void studentDashboard(Scanner sc) {
+      int rollno = 0;
+      String name = "";
+      try {
+         System.out.print("Enter UserName(as Rollno.):- ");
+         rollno = sc.nextInt();
+         sc.nextLine();
+         System.out.print("Enter Password(as Name):- ");
+         name = sc.nextLine();
+      } catch (InputMismatchException e) {
+         System.out.println("Please Enter valid Username & password :(");
+      }
+      try {
+
+         if (DatabaseHandler.verifyStudent(rollno, name)) {
+
+            boolean studentRunning = true;
+
+            while (studentRunning) {
+               System.out.println("1.See your Profile.");
+               System.out.println("2.View Top 3 Students.");
+               System.out.println("3.Exit");
+               System.out.print("Enter your choice:- ");
+               int choice = sc.nextInt();
+
+               switch (choice) {
+
+                  case 1:
+                     DatabaseHandler.getStudentByRollno(rollno);
+                     break;
+                  case 2:
+                     DatabaseHandler.showTopStudents();
+                     break;
+                  case 3:
+                     studentRunning = false;
+                     break;
+                  default:
+                     System.out.println("Please Enter valid choice !!");
+
+               }
+            }
+
+         }
+         else{System.out.println("Login Failed: Incorrect Roll Number or Name.");
+
+         }
+
+      } catch (SQLException e) {
+         e.printStackTrace();
+      }
+
+      sc.nextLine();
+   }
+
+   public static void main(String[] args) {
+      Scanner sc = new Scanner(System.in);
+      int user = 0;
+      try {
+
+         System.out.println("Welcome , Who is logging in?");
+         System.out.println("1.Admin");
+         System.out.println("2.Student");
+         System.out.print("Enter 1 or 2 :- ");
+         user = sc.nextInt();
+         sc.nextLine();
+
+      } catch (InputMismatchException e) {
+         System.out.println("Please Enter valid input, 1 or 2");
+         sc.nextLine();
+      }
+
+      System.out.println("Connecting to Database ....");
+      DatabaseHandler.initializeDb();
+
+      if (user == 1)
+         adminDashboard(sc);
+      else
+         studentDashboard(sc);
+
+      return;
+
    }
 }

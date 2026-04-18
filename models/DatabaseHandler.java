@@ -129,6 +129,7 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
+
     // details of All teachers
     public static void getAllTeachers() {
         String sqlQuery = "SELECT * FROM teachers";
@@ -298,7 +299,8 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
     }
-        public static void showTopStudents() {
+
+    public static void showTopStudents() {
         String sqlQuery = "SELECT * FROM students ORDER BY marks DESC LIMIT 3";
         try (Connection con = connect();
                 Statement stmt = con.createStatement();
@@ -322,6 +324,23 @@ public class DatabaseHandler {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean verifyStudent(int rollno, String name) throws SQLException {
+
+        String sqlQuery = "SELECT * FROM students WHERE rollno = ? AND name = ?";
+
+        try (Connection con = connect();
+                PreparedStatement pstmt = con.prepareStatement(sqlQuery)) {
+
+            pstmt.setInt(1, rollno);
+            pstmt.setString(2, name);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            return rs.next();
+
         }
     }
 
