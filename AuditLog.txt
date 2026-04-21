@@ -4,3 +4,12 @@ New Student Added:- Prince Sayja with Marks:- 98.0
 New Student Added:- Sudhir Solanki with Marks:- 99.1
 Existing Student Updated :- Denil Parmar with Marks:- 69.0
 New Student Added:- Rashi Patil with Marks:- 95.0
+ADMIN Existing Student Updated of Rollno: 1with new name: Sakshi Patil new marks: 82.0
+ at2026-Apr-21 16:27:46
+ ADMIN  Added new Student with name: Dax Solanki &marks: 74.3
+ at2026-Apr-21 16:28:21
+ STUDENT viewed Profile at2026-Apr-21 16:29:25
+ STUDENT viewed Profile at 2026-Apr-21 16:32:16
+STUDENT viewed Profile at 2026-Apr-21 16:33:46 
+ADMIN  Added new Student with name: demo &marks: 100.0 at 2026-Apr-21 16:35:03 
+ADMIN Existing Student Deleted, of Rollno: 18 at 2026-Apr-21 16:35:14 

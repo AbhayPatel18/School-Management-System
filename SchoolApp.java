@@ -1,6 +1,8 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import models.DatabaseHandler;
@@ -78,15 +80,7 @@ public class SchoolApp {
                   DatabaseHandler.insertStudent(stdName, stdCity, marks);
                   System.out.println("Student Added!");
 
-                  try {
-                     FileWriter pen = new FileWriter("AuditLog.txt", true);
-                     pen.write("New Student Added:- " + stdName + " with Marks:- " + marks + "\n");
-
-                     pen.close();
-
-                  } catch (IOException e) {
-                     System.out.println("Could NOT write into the Log File.");
-                  }
+                  logAction("ADMIN ", "Added new Student with name: " + stdName + " &marks: " + marks);
 
                   break;
                case 2:
@@ -128,15 +122,7 @@ public class SchoolApp {
                   roll = sc.nextInt();
                   DatabaseHandler.deleteStudent(roll);
 
-                  try {
-                     FileWriter pen = new FileWriter("AuditLog.txt", true);
-                     pen.write("Existing Student Deleted , of Rollno:- " + roll + "\n");
-
-                     pen.close();
-
-                  } catch (IOException e) {
-                     System.out.println("Could NOT write into the Log File.");
-                  }
+                  logAction("ADMIN", "Existing Student Deleted, of Rollno: " + roll);
                   break;
                case 8:
                   System.out.print("Enter Roll no. of student to update: ");
@@ -153,15 +139,8 @@ public class SchoolApp {
                   double newMarks = sc.nextDouble();
                   sc.nextLine(); // Clear scanner buffer
 
-                  try {
-                     FileWriter pen = new FileWriter("AuditLog.txt", true);
-                     pen.write("Existing Student Updated :- " + newName + " with Marks:- " + newMarks + "\n");
-
-                     pen.close();
-
-                  } catch (IOException e) {
-                     System.out.println("Could NOT write into the Log File.");
-                  }
+                  logAction("ADMIN", "Existing Student Updated of Rollno: " + updateRoll + "with new name: " + newName
+                        + " new marks: " + newMarks);
 
                   DatabaseHandler.updateStudent(updateRoll, newName, newCity, newMarks);
                   break;
@@ -219,6 +198,7 @@ public class SchoolApp {
 
                   case 1:
                      DatabaseHandler.getStudentByRollno(rollno);
+                     logAction("STUDENT", "viewed Profile");
                      break;
                   case 2:
                      DatabaseHandler.showTopStudents();
@@ -232,8 +212,8 @@ public class SchoolApp {
                }
             }
 
-         }
-         else{System.out.println("Login Failed: Incorrect Roll Number or Name.");
+         } else {
+            System.out.println("Login Failed: Incorrect Roll Number or Name.");
 
          }
 
@@ -242,6 +222,21 @@ public class SchoolApp {
       }
 
       sc.nextLine();
+   }
+
+   public static void logAction(String userRole, String action) {
+      LocalDateTime current = LocalDateTime.now();
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd HH:mm:ss");
+
+      String formatedDateTime = current.format(formatter);
+      try {
+         FileWriter pen = new FileWriter("Auditlog.txt", true);
+         pen.write(userRole + " " + action + " at " + formatedDateTime+" \n");
+
+         pen.close();
+      } catch (IOException e) {
+         System.out.println("Someting went worng in Enter Data into Log file :(");
+      }
    }
 
    public static void main(String[] args) {
@@ -268,8 +263,6 @@ public class SchoolApp {
          adminDashboard(sc);
       else
          studentDashboard(sc);
-
-      return;
 
    }
 }
